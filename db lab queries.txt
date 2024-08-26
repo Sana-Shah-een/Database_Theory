@@ -1,0 +1,69 @@
+create table section(
+id int primary key identity(1,1),
+s_name varchar(250),
+s_dept varchar(250),
+s_class varchar(250));
+insert into section values('suman','cs','fa22bcs'),('ramsha','it','fa22it'),('smavia','se','fa22se');
+
+
+
+
+create table section2(
+id int primary key identity(1,1),
+s_marks numeric(4,0),
+s_cgpa numeric(4,2),
+s_fee numeric(7,0));
+insert into section2 values(60,3.00,55000),(70,2.90,60000),(80,2.30,700000);
+select section.s_name,section.s_dept,section.s_class,section2.s_marks,section2.s_cgpa,section2.s_fee from section
+inner join section2 on section.id=section2.id;
+
+
+
+
+create table sectionb(
+id int primary key identity(1,1),
+s_uni varchar (260),
+s_hobby varchar(250));
+insert into sectionb values('comsats','cooking'),('air','sleep'),('nust','gardening');
+
+
+
+
+
+select section.s_name,section.s_dept,section.s_class,section2.s_marks,section2.s_cgpa,section2.s_fee from section
+inner join section2 on section.id=section2.id;
+select * from section;
+select * from section2;
+select section.s_name,section.s_dept,section.s_class,section2.s_marks,section2.s_cgpa,section2.s_fee from section
+left join section2 on section.id=section2.id;
+select section.s_name,section.s_dept,section.s_class,section2.s_marks,section2.s_cgpa,section2.s_fee from section
+right join section2 on section.id=section2.id;
+select section.s_name,section.s_dept,section.s_class,section2.s_marks,section2.s_cgpa,section2.s_fee from section
+full join section2 on section.id=section2.id;
+select * from sectionb;
+
+SELECT section.s_name, section.s_dept, section.s_class,
+  section2.s_marks, section2.s_cgpa, section2.s_fee,
+   sectionb.s_uni, sectionb.s_hobby 
+FROM section
+INNER JOIN section2 ON section.id = section2.id
+INNER JOIN sectionb ON section.id = sectionb.id;
+SELECT section.s_name, section.s_dept, section.s_class, section2.s_marks, section2.s_cgpa, section2.s_fee,
+       sectionb.s_uni, sectionb.s_hobby 
+FROM section
+left JOIN section2 ON section.id = section2.id
+left JOIN sectionb ON section.id = sectionb.id;
+
+SELECT section.s_name, section.s_dept, section.s_class,
+       section2.s_marks, section2.s_cgpa, section2.s_fee,
+       sectionb.s_uni, sectionb.s_hobby 
+FROM section
+full JOIN section2 ON section.id = section2.id
+right JOIN sectionb ON section.id = sectionb.id;
+
+SELECT section.s_name, section.s_dept, section.s_class,
+       section2.s_marks, section2.s_cgpa, section2.s_fee,
+       sectionb.s_uni, sectionb.s_hobby 
+FROM section
+full JOIN section2 ON section.id = section2.id
+full JOIN sectionb ON section.id = sectionb.id;

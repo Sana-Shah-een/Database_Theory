@@ -1,0 +1,244 @@
+select*from filmloacation;   // for all row and columns execution
+select title year, release year,distributor from filmlocation;   // for specific columns execution 
+select*from filmlocation where id=2;  // for specific row execute
+select*from filmlocation where release year <=2000;   // show movies release before or in 2000
+select*from filmloacation where locations='karachi';   // for karachi movies
+select*from filmloacation where actor2='adnan';   // for specific actor movie
+select*from filmloacation where actor2='adnan'AND locations='karachi';   // this will run/fetch if both conditions will be true in same row
+select*from filmloacation where actor2='adnan'OR locations='karachi';  // for both specific columns
+select*from filmloacation where productionCompany='jeo' AND release year>=2000;  // for both specific columns
+select*from filmloacation where NOT actor1='shan';   // for specific requirement
+select*from filmloacation ORDER BY release year;   // for sorted form of movies by releaseyear in ascending order
+select*from filmloacation ORDER BY release year DESC;  // In descending order
+select count (*) from filmlocation;
+select count (locations) from filmlocation; // locations wale column m jitni values hongi wo calculate kre ga. agr koi value null hui to use count ni kre ga
+select distinct (locations) from filmlocation; // jitni cities m movies shoot hui hn sb ko show krae ga agr koi duplicate hui to use count ni kre ga
+select count (distinct locations) from filmlocation; // jitni different cities hon gi unko count ke ga
+
+select max(release_year) from filmlocations; // release year m jo b maxium value hogi latest released movie
+select min(release_year) from filmlocations; // release year m jo b minimum value hogi first released movie
+select avg(release_year) from filmlocations; // sb release years ko add kr k average nikal dia
+select sum(release_year) from filmlocations;
+select top 3*from filmlocations; // top 3 rows ka data show hoga
+select top 3*from filmlocations order by id desc; // bottom wali 3 rows ka data show hoga
+select * from filmlocation where actor_1 like 'a%';  // a naam se shuru hne wale actors
+select * from filmlocation where actor_1 like '%ad%'; // ad 2 alphabets wale actor naam
+ 
+
+
+LAB 08:
+
+///create new table
+create table class1(
+id int identity(1,1)primary key, ///starts from 1 and next 1 represents the one increment in id
+c_name varchar(50),
+c_dept varchar(50),
+c_students int,
+c_degree varchar(50));    /// maybe table does'nt show in left side then off the software and again open
+
+insert into class1 values('fa22-bcs','cs',63,'bscs'),
+('fa23','se',77,'bs se'),
+('fa24','bba',34,'BBA');
+select*from class1;
+delete from class1 where id=2;  /// del row 2
+update class1 set c_name='sp22-bcs',c_dept='AI',c_students=71,c_degree='BS AI' where id=2;
+alter table class1 
+add c_marks int;  /// add another column in table
+update class1 set c_marks=80;
+select*from class1;
+update class1 set c_marks=case id when 1 then 90
+when 3 then 80
+when 4 then 70
+when 5 then 60
+else
+c_marks end
+where id in (1,3,4,5);  /// end the program with else then condition applied
+
+
+
+
+LAB 09:  ALTER TABLE:
+select *from student;
+alter table student
+add address varchar(50); /// add another column in table
+alter table student 
+drop column address; /// delete added column
+
+alter table student 
+alter column s_name varchar(70);/// change length (database m se table select kr k right click kren gy or design m ja length dekhen gy)
+
+alter table student 
+alter column s_cgpa numeric; /// change datatype
+
+alter table student 
+alter column s_dep numeric(5,1); /// 5 uski value hogi or point k aage 1 digit tk value dega( yhn conversion nhi hogi q kdep ki already datatype varchar m h jo k 2 trh k nbrs rkhta h is k lie phle us column ka sara data del krna pre ga, text se int m ya int se text m convert ho skta h
+ 
+
+alter table student 
+rename s_dept to s_department;  /// ye execute nhi hoga q k rename type sql m nhi h ye srf mysql ya sql lite m execute hogi(is k lie neeche wali query run hogi)
+
+exec sp_rename'student.s_dept','s_dept';  /// this will execute
+alter table student
+add primary key(roll_nbr);  //// add primary key 
+       
+
+
+
+
+AFTER MIDS:
+
+JOINS:
+>>>>>>>>>>>>>>>USE TO JOIN MORE THAN ONE TABLES
+INNER JOIN:
+>>>>>>>>>>>>>aesa data le k aega jo dono tables k andr common hoga
+LEFT JOIN:
+>>>>>>>>>>>>>>>>agr A or B 2 tables hn to left join A ka sara data or A and B ka common data b show kre ga
+RIGHT JOIN:
+>>>>>>>>>>>>>>>B ka sara data or in dono ka common data show hoga
+FULL JOIN:
+>>>>>>>>>>>>>>A and B dono ka sara data show hoga
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>TABLE 1<<<<<<<<<<<<<<<<<<<<<<<<<<
+create table section_b(
+id int primary key identity(1,1),
+s_name varchar(50),
+s_dep varchar(50),
+s_class varchar(50));
+
+insert into section_b values('Amna','CS','BS'),
+('Ayesha','FSN','MS'),
+('Zunaira','SE','BS');
+select*from section_b;
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>TABLE 2<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+create table section_b1(
+s_id int primary key identity(1,1),
+s_marks numeric(4,0),
+s_cgpa numeric(4,2),
+s_fee numeric(7,0));
+
+insert into section_b1 values(60,3.00,55000),
+(70,2.90,60000),
+(80,3.02,70000),
+(90,3.57,50000);
+select*from section_b1;
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>TABLE 3<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+create table section_b2(
+s_id1 int primary key identity(1,1),
+s_university varchar(50),
+s_hobby varchar(50));
+insert into section_b2 values('Comsats sahiwal','Reading'),
+('University of sahiwal','Cooking'),
+('Okara university','Reading'),
+('Virtual university','Writing'),
+('Superior arifwala','Cricket');
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>INNER JOIN<<<<<<<<<<<<<<<<<<<<<<<<<
+
+select section_b.s_name,section_b.s_dep,section_b.s_class,section_b1.s_marks,section_b1.s_cgpa,section_b1.s_fee     /////table ka naam phr jo jo column hm ne lna h uska naam likhna 
+from section_b    ////yhn phla jo table likhen gy wo left join hoga
+inner join section_b1     ////right join
+on section_b.id= section_b1.s_id;  ////dono tables k andr koi aesa column hna chye jo common ho naam bhle change ho lkn values same hni chye otherwise join work ni krega
+//////2nd table m 4 values hn or 1st m 3 hn to exexcute bhi 3 hi hon gi q k 4 nbr common ni h
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>LEFT JOIN<<<<<<<<<<<<<<<<<<<<<<<<<
+
+select section_b.s_name,section_b.s_dep,section_b.s_class,section_b1.s_marks,section_b1.s_cgpa,section_b1.s_fee 
+from section_b
+left join section_b1 on section_b.id= section_b1.s_id;    ////left wale ki sari values hn gi agr right table ki values phle wale se zyada hn to baqion ki jga nul ajae ga
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>RIGHT JOIN<<<<<<<<<<<<<<<<<<<<<<<<<
+
+select section_b.s_name,section_b.s_dep,section_b.s_class,section_b1.s_marks,section_b1.s_cgpa,section_b1.s_fee 
+from section_b
+right join section_b1 on section_b.id= section_b1.s_id;
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>FULL JOIN<<<<<<<<<<<<<<<<<<<<<<<<<
+
+select section_b.s_name,section_b.s_dep,section_b.s_class,section_b1.s_marks,section_b1.s_cgpa,section_b1.s_fee 
+from section_b
+full join section_b1 on section_b.id= section_b1.s_id;
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   VIEW   >>>>>>>>>>>>>>>>>>>>>>>>
+virtual table, view has no memory,DATA is stored in base table from which view is derived.
+PURPOSE:
+1. data can be accessed quickly(data in RAM, take ss of data), base table m koi data dalen gy to wo base m show hoga and vice versa    /////view pure table ka b bn skta h or kuch columns ka b
+2.  security
+id, name, class, email, fee, marks, city, dept
+
+
+
+create table view_table(
+id int primary key,
+s_dep varchar(50),
+s_class varchar(50);
+
+insert into view_table values(1,'CS','SP22-BCS'),
+(2,'SE','SP22-BSE'),
+(3,'IT','SP22-BIT'),
+(4,'BIO','SP22-BIO');
+
+create view full_view
+as 
+select*from view_table;
+
+create view specific_view
+as
+select id,s_class from view_table;
+select*from specific_view;
+
+create table view_table2(
+id int primary key,
+s_dep varchar(50),
+s_marks numeric(4,0),
+s_cgpa numeric(4,2));
+
+create view join_view
+as
+select view_table.*,view_table2.s_cgpa,view_table2.s_marks from view_table
+inner join view_table2 on 
+viewtable.id=view_table2.id;
+
+select*from join_view
+
+insert into view_table2 values(1,50,3.57),
+(2,60,3.50),
+(3,70,3.43),
+(4,80,3.68);
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSIGNMENT 3 (AFTER MID) >>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+3 tables bnane, 2 pr automatic primary
+ak pr odd numbers primary key ho
+3no ka ak view bnana ha
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
